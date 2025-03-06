@@ -23,7 +23,11 @@ const pageTitle = '官方动态'
     {
       allNews.map((news) => (
         <a class="news" href={'./' + news.id}>
-          <img src={news.image} width="300" alt={news.image} />
+          <img
+            src={news.image_input[0]}
+            width="300"
+            alt={news.image_input[0]}
+          />
           <div>
             <p class="title">{news.title}</p>
             <p class="message">
