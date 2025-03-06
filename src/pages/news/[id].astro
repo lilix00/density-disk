@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+export const prerender = false
+const token =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwd2QiOiJlZTk4ODFmNDRlNzk1ODgyODcyYWNkN2E0N2RjOGJjYyIsImlzcyI6Ind3dy5kZ2JxLm5ldCIsImF1ZCI6Ind3dy5kZ2JxLm5ldCIsImlhdCI6MTc0MTI0MzEyMywibmJmIjoxNzQxMjQzMTIzLCJleHAiOjE3NDM4MzUxMjMsImp0aSI6eyJpZCI6MSwidHlwZSI6ImFkbWluIn19.U_DMquDAQj7dOwDmjl6g2QIQELhFN-xq0WQ2tFlfHbQ'
+
+const { id } = Astro.params
+
+const res = await fetch(`https://www.dgbq.net/api/article/details/${id}`, {
+  method: 'GET', // 或 POST、PUT 等
+  headers: {
+    'Authori-zation': `Bearer ${token}`, // Bearer Token 格式
+    'Content-Type': 'application/json', // 根据需求设置
+  },
+}).then((res) => res.json())
+const newsData = res.data
+console.log('-------', res)
+---
+
+<BaseLayout pageTitle={newsData.title}>
+  <div class="desc">
+    <div class="catename">{newsData.catename}</div>
+    <div class="add_time">发布时间：{newsData.add_time}</div>
+    <div class="visit">浏览量：{newsData.visit}</div>
+  </div>
+  <div class="content" set:html={newsData.content} />
+</BaseLayout>
+<style>
+  .desc {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #bbb;
+  }
+  .catename {
+    flex: 1;
+  }
+  .content {
+    margin-top: 20px;
+  }
+</style>
