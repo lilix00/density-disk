@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+const token =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwd2QiOiJlZTk4ODFmNDRlNzk1ODgyODcyYWNkN2E0N2RjOGJjYyIsImlzcyI6Ind3dy5kZ2JxLm5ldCIsImF1ZCI6Ind3dy5kZ2JxLm5ldCIsImlhdCI6MTc0MTI0MzEyMywibmJmIjoxNzQxMjQzMTIzLCJleHAiOjE3NDM4MzUxMjMsImp0aSI6eyJpZCI6MSwidHlwZSI6ImFkbWluIn19.U_DMquDAQj7dOwDmjl6g2QIQELhFN-xq0WQ2tFlfHbQ'
+const res = await fetch(
+  `https://www.dgbq.net/adminapi/cms/cms?pid=0&title=&page=1&limit=20`,
+  {
+    method: 'GET', // 或 POST、PUT 等
+    headers: {
+      'Authori-zation': `Bearer ${token}`, // Bearer Token 格式
+      'Content-Type': 'application/json', // 根据需求设置
+    },
+  }
+).then((res) => res.json())
+const allNews = res.data.list
+console.log('-----', allNews)
+
+const pageTitle = '官方动态'
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="newList">
+    {
+      allNews.map((news) => (
+        <a class="news" href={'./' + news.id}>
+          <img src={news.image} width="300" alt={news.image} />
+          <div>
+            <p class="title">{news.title}</p>
+            <p class="message">
+              <em>{news.intr}</em>
+            </p>
+            <div class="attribute">
+              <p class="time">{news.add_time}</p>
+              <p class="view">{news.visit}</p>
+            </div>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>
+<style>
+  a {
+    text-decoration: none;
+  }
+
+  .news {
+    display: flex;
+    padding: 25px 30px;
+    margin-top: 4px;
+    background-color: #ffffff;
+  }
+
+  .news img {
+    width: 250px;
+    height: 140px;
+    border-radius: 2px;
+    margin-right: 20px;
+    background-color: #d8d8d8;
+    object-fit: cover;
+  }
+
+  .title {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: #333333;
+  }
+  .message {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 11px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #777777;
+  }
+  .attribute {
+    display: flex;
+    margin-top: 11px;
+    font-size: 14px;
+    line-height: 14px;
+    color: #bbbbbb;
+  }
+  .time {
+    margin-right: 40px;
+  }
+</style>
