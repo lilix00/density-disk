@@ -8,6 +8,6 @@ export default defineConfig({
   // SSG 模式
   // integrations: [preact()],
   // 启用 SSR 模式
-  output: 'server',
+  output: 'static',
   adapter: vercel(), // 使用 Vercel 适配器
 })
